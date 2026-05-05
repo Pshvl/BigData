@@ -44,7 +44,7 @@ public class ExpiringStateExercise extends ExerciseBase {
                 .connect(fares)
                 .process(new EnrichmentFunction());
 
-        // Выводим ОБА потока несопоставленных данных[cite: 2]
+        // Выводим ОБА потока несопоставленных данных
         printOrTest(processed.getSideOutput(unmatchedRides));
         printOrTest(processed.getSideOutput(unmatchedFares));
 
@@ -78,7 +78,7 @@ public class ExpiringStateExercise extends ExerciseBase {
             TaxiFare fare = fareState.value();
             if (fare != null) {
                 fareState.clear();
-                context.timerService().deleteEventTimeTimer(fare.getEventTime()); // Удаляем таймер оплаты[cite: 2]
+                context.timerService().deleteEventTimeTimer(fare.getEventTime()); // Удаляем таймер оплаты
                 out.collect(new Tuple2<>(ride, fare));
             } else {
                 rideState.update(ride);
@@ -91,7 +91,7 @@ public class ExpiringStateExercise extends ExerciseBase {
             TaxiRide ride = rideState.value();
             if (ride != null) {
                 rideState.clear();
-                context.timerService().deleteEventTimeTimer(ride.getEventTime()); // Удаляем таймер поездки[cite: 2]
+                context.timerService().deleteEventTimeTimer(ride.getEventTime()); // Удаляем таймер поездки
                 out.collect(new Tuple2<>(ride, fare));
             } else {
                 fareState.update(fare);
